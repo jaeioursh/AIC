@@ -1,16 +1,14 @@
 from math import tanh
 
 class poi:
-    def __init__(self,x,y,poi_type,work,params):
+    def __init__(self,x,y,work,params):
         self.x=x
         self.y=y
-        self.type=poi_type
-        
         self.type_val=1.0
         
-        self.work=work
+        self.work=work #work done
         self.work_=work
-        self.complete=self.fn(work,1)
+        self.complete=self.fn(work,1) #how completed it is based on work done
         
         self.params=params
         self.dvec=[0]*params.n_agents
@@ -32,17 +30,19 @@ class poi:
 
 class linear_poi(poi):
     def __init__(self, x, y, params):
-        super().__init__(x, y, 0, 0.0, params)
+        super().__init__(x, y, 0.0, params)
         self.type_val=0.1
         
     def fn(self,work,p):
         return min(work*p*self.type_val,1)
 
 class tanh_poi(poi):
-    def __init__(self, x, y, work, params):
-        super().__init__(x, y, 1, 0.0, params)
+    def __init__(self, x, y, params):
+        super().__init__(x, y, 0.0, params)
         self.type_val=0.5
     def fn(self,work,p):
         return tanh(work*p*self.type_val)
+    
+    
 
 

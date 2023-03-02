@@ -1,5 +1,6 @@
 from random import random
 from poi import tanh_poi
+from agent import agent
 def init_fn(n):
     return n+random(),n+random()    
 
@@ -9,7 +10,13 @@ class parameter:
     time_steps=50
     speed=2.0
     map_size=30
-    agent_init=lambda: init_fn(15)
+
     poi_pos=[[0,1],[20,5],[30,2]]
     n_pois=len(poi_pos)
     poi_class=[tanh_poi]*n_pois
+
+    agent_class=[agent]*n_agents
+    agent_pos=[init_fn(15) for i in range(n_agents)]
+
+    interact_range=2.0
+    n_sensors=4
