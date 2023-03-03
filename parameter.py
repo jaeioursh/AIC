@@ -1,5 +1,5 @@
 from random import random
-from poi import tanh_poi
+from poi import tanh_poi,linear_poi
 from agent import agent
 def init_fn(n):
     return n+random(),n+random()    
@@ -13,7 +13,7 @@ class parameter:
 
     poi_pos=[[0,1],[20,5],[30,2]]
     n_pois=len(poi_pos)
-    poi_class=[tanh_poi]*n_pois
+    poi_class=[tanh_poi]*2+[linear_poi]
 
     agent_class=[agent]*n_agents
     agent_pos=[init_fn(15) for i in range(n_agents)]

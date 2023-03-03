@@ -15,7 +15,7 @@ class agent:
 
     def move(self,x,y,speed):
 
-        r = sqrt((x-self.x)**2.0 +(y-self.y))+1e-9
+        r = sqrt((x-self.x)**2.0 +(y-self.y)**2.0)+1e-9
         dx=(x-self.x)/r
         dy=(y-self.y)/r
         self.x+=dx*self.top_speed*speed

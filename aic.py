@@ -6,10 +6,14 @@ class aic:
         self.params=params
         poi_types=list(set(params.poi_class)) #list of classes
         self.poi_types=[]                       #list of idxs
+        
         for poi in params.poi_class:
             for i in range(len(poi_types)):
                 if poi==poi_types[i]:
                     self.poi_types.append(i)
+
+        self.n_poi_types=max(self.poi_types)+1
+        
         self.pois=[]
         for pos,poi_class in zip(params.poi_pos,params.poi_class):
             self.pois.append(poi_class(pos[0],pos[1],params))
@@ -31,40 +35,37 @@ class aic:
         return g
 
     def D(self):
-        d=[[0.0]*len(self.poi_types)]*self.params.n_agents
+        d=[[0.0]*len(self.poi_types) for _ in range(self.params.n_agents)]
         for idx,poi in zip(self.poi_types,self.pois):
-            for i in range(self.params.n_agents)
+            for i in range(self.params.n_agents):
                 d[i][idx]+=poi.dvec[i]
         return d
     
     #bins pois and agents for the sensors and the actions
     def binning(self):
         #          n sensors for each poi type, +1 for agents
-        bins=[[[]]*(len(self.poi_types)+1)*self.params.n_sensors ]*self.params.n_agents
-        for type,poi in zip(self.poi_types,self.pois):
-            X=poi.x
-            Y=poi.y
-            for i in range(self.params.n_agents):
-                agent=self.agents[i]
-                x=agent.x
-                y=agent.y
+        bins=[[[] for _ in range((self.n_poi_types+1)*self.params.n_sensors) ] for _ in range(self.params.n_agents)]
+        
+        for i in range(self.params.n_agents):
+            agent=self.agents[i]
+            X=agent.x
+            Y=agent.y
+            for type,poi in zip(self.poi_types,self.pois):
+                x=poi.x
+                y=poi.y
                 r=sqrt((x-X)**2+(y-Y)**2)
                 idx=int((atan2(y-Y,x-X)+pi)/(pi*2.0)*self.params.n_sensors)
                 idx+=type*self.params.n_sensors
                 bins[i][idx].append([poi,r])
 
-        for i in range(self.params.n_agents):
-            agent=self.agents[i]
-            X=agent.x
-            Y=agent.y
             for j in range(self.params.n_agents):
                 if i!=j:
-                    agent=self.agents[i]
+                    agent=self.agents[j]
                     x=agent.x
                     y=agent.y
                     r=sqrt((x-X)**2+(y-Y)**2)
                     idx=int((atan2(y-Y,x-X)+pi)/(pi*2.0)*self.params.n_sensors)
-                    idx+=len(self.poi_types)*self.params.n_sensors
+                    idx+=self.n_poi_types*self.params.n_sensors
                     bins[i][idx].append([agent,r])
         return bins
 
@@ -73,8 +74,8 @@ class aic:
         S=[]
         for i in range(self.params.n_agents):
             bin=bins[i]
-            poi_bin=bin[:-4]
-            agent_bin=bin[-4:]
+            poi_bin=bin[:-self.params.n_sensors]
+            agent_bin=bin[-self.params.n_sensors:]
             state_poi_complete=[sum([1/(poi.complete+1) for poi,r in pois]) if len(pois)>0 else 0 for pois in poi_bin]
             state_poi_dist=[sum([1/(r+1) for poi,r in pois]) if len(pois)>0 else 0 for pois in poi_bin]
             state_agent_dist=[sum([1/(r+1) for agent,r in agents]) if len(agents)>0 else 0 for agents in agent_bin]
