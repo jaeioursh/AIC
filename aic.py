@@ -79,7 +79,7 @@ class aic:
             state_poi_complete=[sum([1/(poi.complete+1) for poi,r in pois]) if len(pois)>0 else 0 for pois in poi_bin]
             state_poi_dist=[sum([1/(r+1) for poi,r in pois]) if len(pois)>0 else 0 for pois in poi_bin]
             state_agent_dist=[sum([1/(r+1) for agent,r in agents]) if len(agents)>0 else 0 for agents in agent_bin]
-            state_battery=[self.agents[i].battery]
+            state_battery=[self.agents[i].battery/self.params.battery]
             S.append(state_poi_complete+state_poi_dist+state_agent_dist+state_battery)
         return np.array(S)
 
