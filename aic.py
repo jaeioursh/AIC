@@ -54,7 +54,7 @@ class aic:
                 x=poi.x
                 y=poi.y
                 r=sqrt((x-X)**2+(y-Y)**2)
-                idx=int((atan2(y-Y,x-X)+pi)/(pi*2.0)*self.params.n_sensors)
+                idx=int(0.99999*(atan2(y-Y,x-X)+pi)/(pi*2.0)*self.params.n_sensors)
                 idx+=type*self.params.n_sensors
                 bins[i][idx].append([poi,r])
 
@@ -64,7 +64,7 @@ class aic:
                     x=agent.x
                     y=agent.y
                     r=sqrt((x-X)**2+(y-Y)**2)
-                    idx=int((atan2(y-Y,x-X)+pi)/(pi*2.0)*self.params.n_sensors)
+                    idx=int(0.99999*(atan2(y-Y,x-X)+pi)/(pi*2.0)*self.params.n_sensors)
                     idx+=self.n_poi_types*self.params.n_sensors
                     bins[i][idx].append([agent,r])
         return bins
