@@ -1,17 +1,26 @@
 from math import atan2,pi,sqrt
 import numpy as np
 
+def pois2type(pois):
+    lst=[]
+    for poi in pois:
+        if not poi in lst:
+            lst.append(poi)
+    types=[]
+    
+    for poi in pois:
+        for i in range(len(lst)):
+            if poi==lst[i]:
+                types.append(i)
+
+    return types
+        
+
+
 class aic:
     def __init__(self,params):
         self.params=params
-        poi_types=list(set(params.poi_class)) #list of classes
-        self.poi_types=[]                       #list of idxs
-        
-        for poi in params.poi_class:
-            for i in range(len(poi_types)):
-                if poi==poi_types[i]:
-                    self.poi_types.append(i)
-
+        self.poi_types=pois2type(params.poi_class)
         self.n_poi_types=max(self.poi_types)+1
         
         self.pois=[]
@@ -45,7 +54,6 @@ class aic:
     def binning(self):
         #          n sensors for each poi type, +1 for agents
         bins=[[[] for _ in range((self.n_poi_types+1)*self.params.n_sensors) ] for _ in range(self.params.n_agents)]
-        
         for i in range(self.params.n_agents):
             agent=self.agents[i]
             X=agent.x

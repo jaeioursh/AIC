@@ -11,7 +11,7 @@ class parameter:
     speed=2.0
     map_size=30
 
-    poi_pos=[[0,1],[20,5],[30,2]]
+    poi_pos=[[1,1],[20,5],[25,25]]
     n_pois=len(poi_pos)
     poi_class=[tanh_poi]*2+[linear_poi]
 
