@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 plt.ion()
 
-def view(env,state=None):
+def view(env,state=None,dly=0.1):
     
     plt.clf()
     if state is not None:
@@ -22,4 +22,4 @@ def view(env,state=None):
     if state is not None:
         plt.subplot(1,2,2)
         plt.imshow(state)
-    plt.pause(0.1)
+    plt.pause(dly)
