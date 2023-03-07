@@ -94,19 +94,20 @@ class aic:
     def action(self,A):
         bins=self.binning()    
         for i in range(self.params.n_agents):
-            bin=bins[i]
-            agent=self.agents[i]
-            a=A[i]
-            idx=np.argmax(a[:-3])
-            if len(bin[idx])>0:
-                
-                movement=a[-3]
-                effort=a[-2]
-                speed=a[-1]
+            if self.agents[i].battery>0:
+                bin=bins[i]
+                agent=self.agents[i]
+                a=A[i]
+                idx=np.argmax(a[:-3])
+                if len(bin[idx])>0:
+                    
+                    movement=a[-3]
+                    effort=a[-2]
+                    speed=a[-1]
 
-                poi,r=min(bin[idx],key=lambda x:x[1])
-                agent.move(poi.x,poi.y,movement)
+                    poi,r=min(bin[idx],key=lambda x:x[1])
+                    agent.move(poi.x,poi.y,movement)
 
-                if r<self.params.interact_range:
-                    agent.interact(effort,speed)
-                    poi.observe(i,effort,speed)
+                    if r<self.params.interact_range:
+                        agent.interact(effort,speed)
+                        poi.observe(i,effort,speed)
