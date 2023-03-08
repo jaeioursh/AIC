@@ -26,7 +26,7 @@ class poi:
 
     def observe(self, agent_idx, effort, speed):
         self.work += speed
-        self.new_complete = self.fn(self.work, effort)
+        self.new_complete = max(self.fn(self.work, effort),self.complete)
         self.dvec[agent_idx] += self.new_complete - self.complete
         self.complete = self.new_complete
 
