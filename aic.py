@@ -40,13 +40,13 @@ class aic:
             a.reset()
 
     def G(self):
-        g = [0.0] * len(self.poi_types)
+        g = [0.0] * self.n_poi_types
         for idx, poi in zip(self.poi_types, self.pois):
             g[idx] += poi.complete
         return g
 
     def D(self):
-        d = [[0.0] * len(self.poi_types) for _ in range(self.params.n_agents)]
+        d = [[0.0] * self.n_poi_types for _ in range(self.params.n_agents)]
         for idx, poi in zip(self.poi_types, self.pois):
             for i in range(self.params.n_agents):
                 d[i][idx] += poi.dvec[i]
