@@ -16,9 +16,9 @@ class parameter:
     speed = 2.0
     map_size = 30
 
-    poi_pos = [[0, 1], [20, 5], [30, 2]]
-    n_pois = len(poi_pos)
-    poi_class = [tanh_poi] * 2 + [linear_poi]
+    poi_pos=[[1,1],[20,5],[25,25],[7,28]]*2
+    n_pois=len(poi_pos)
+    poi_class=[tanh_poi]*4+[linear_poi]*4
 
     agent_class = [agent] * n_agents
     agent_pos = [init_fn(15) for i in range(n_agents)]
