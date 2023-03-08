@@ -44,7 +44,7 @@ class linear_poi(poi):
 class tanh_poi(poi):
     def __init__(self, x, y, params):
         super().__init__(x, y, 0.0, params)
-        self.type_val = 0.5
+        self.type_val = 0.1
 
     def fn(self, work, eff):
         # Completeness depends on the previous amount done and the total effort put in

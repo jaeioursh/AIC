@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 plt.ion()
 
 
-def view(env, ts, state=None, dly=0.1):
+def view(env, ts,g, state=None, dly=0.1):
     plt.clf()
     if state is not None:
         plt.subplot(1, 2, 1)
@@ -19,7 +19,7 @@ def view(env, ts, state=None, dly=0.1):
     plt.xlim([-2, env.params.map_size + 2])
     plt.ylim([-2, env.params.map_size + 2])
 
-    plt.title(f'time: {ts}')
+    plt.title(f'time: {ts} G: {g:.2f}')
 
     if state is not None:
         plt.subplot(1, 2, 2)
