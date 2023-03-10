@@ -23,6 +23,7 @@ class poi:
         self.work = self.work_
         self.complete = self.fn(self.work, 1)
         self.dvec = [0] * self.params.n_agents
+        self.new_complete = None
 
     def observe(self, agent_idx, effort, speed):
         self.work += speed
