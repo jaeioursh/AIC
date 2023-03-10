@@ -27,7 +27,7 @@ def test():
     data['Trains per Episode']=32
     initCcea(input_shape=env.state_size(), num_outputs=env.action_size(), num_units=20)(data)
 
-    gens=tqdm.trange(1000)
+    gens=tqdm.trange(20)
     for generation in gens:
         G=[]
         for i in range(data['Trains per Episode']):

@@ -14,7 +14,7 @@ def pois2type(pois):
             if poi == lst[i]:
                 types.append(i)
 
-    return types
+    return np.array(types,dtype=np.int32)
 
 
 class aic:
@@ -87,10 +87,12 @@ class aic:
                     idx += self.n_poi_types * self.params.n_sensors
                     bins[i][idx].append([agent, r])
         return bins
-
+    
+    
     def state(self):
         # Gets the inputs from the sensors for each agent
         bins = self.binning()
+        self.bins=bins
         S = []
         for i in range(self.params.n_agents):
             bin = bins[i]
@@ -117,7 +119,7 @@ class aic:
 
     def action(self, A):
         # Get the POIs and agents in sensor range for all agents
-        bins = self.binning()
+        bins = self.bins
         for i in range(self.params.n_agents):
             if self.agents[i].battery > 0:
                 # For each agent
