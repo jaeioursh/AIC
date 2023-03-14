@@ -1,6 +1,6 @@
 from random import random
-from poi import tanh_poi, linear_poi
-from agent import agent
+from .poi import tanh_poi, linear_poi
+from .agent import agent
 
 
 def init_fn(n):
