@@ -1,10 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-plt.ion()
 
 
 def view(env, ts,g, state=None, dly=0.1):
+    plt.ion()
+
     plt.clf()
     if state is not None:
         plt.subplot(1, 2, 1)
