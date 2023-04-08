@@ -1,5 +1,6 @@
 from math import atan2, pi, sqrt
 import numpy as np
+from AIC.counterAgent import CounterAgent
 
 
 def pois2type(pois):
@@ -32,6 +33,9 @@ class aic:
         # Creates agents and puts them in a list
         for pos, agent_class in zip(params.agent_pos, params.agent_class):
             self.agents.append(agent_class(pos[0], pos[1], params))
+
+        self.n_counter = 3
+        self.counter_agents = [CounterAgent(params) for _ in range(self.n_counter)]
 
     def reset(self):
         for p in self.pois:
@@ -68,7 +72,7 @@ class aic:
                 y = poi.y
                 # Dist between agent and POI
                 r = sqrt((x - X) ** 2 + (y - Y) ** 2)
-                # TODO:This math will need to be explained
+                # TODO:This math will need to be explained to me please
                 idx = int(0.99999 * (atan2(y - Y, x - X) + pi) / (pi * 2.0) * self.params.n_sensors)
                 idx += type * self.params.n_sensors
                 # Add the POI and dist to agent to the appropriate bin
@@ -78,21 +82,37 @@ class aic:
             # If we want to speed this up, we can do the calculation once and save for both agents i & j
             for j in range(self.params.n_agents):
                 if i != j:
-                    agent = self.agents[j]
-                    x = agent.x
-                    y = agent.y
+                    ag = self.agents[j]
+                    x = ag.x
+                    y = ag.y
                     # Distance between agents
                     r = sqrt((x - X) ** 2 + (y - Y) ** 2)
                     idx = int(0.99999 * (atan2(y - Y, x - X) + pi) / (pi * 2.0) * self.params.n_sensors)
                     idx += self.n_poi_types * self.params.n_sensors
-                    bins[i][idx].append([agent, r])
+                    bins[i][idx].append([ag, r])
+
+            # Bin the counter-agents that are within sensor range -- goes in the same bins as the agents
+            for k in range(self.n_counter):
+                ag = self.counter_agents[k]
+                x = ag.x
+                y = ag.y
+                # Distance between agents
+                r = sqrt((x - X) ** 2 + (y - Y) ** 2)
+                idx = int(0.99999 * (atan2(y - Y, x - X) + pi) / (pi * 2.0) * self.params.n_sensors)
+                idx += self.n_poi_types * self.params.n_sensors
+                bins[i][idx].append([ag, r])
+                if r < agent.min_dist:
+                    agent.min_dist = r
+                if r > agent.max_dist:
+                    agent.max_dist = r
+                agent.avg_dist[0] += r
+                agent.avg_dist[1] += 1
         return bins
-    
-    
+
     def state(self):
         # Gets the inputs from the sensors for each agent
         bins = self.binning()
-        self.bins=bins
+        self.bins = bins
         S = []
         for i in range(self.params.n_agents):
             bin = bins[i]

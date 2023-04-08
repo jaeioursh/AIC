@@ -9,10 +9,16 @@ class agent:
         self.x_, self.y_ = self.x, self.y  # to reset values
         self.top_speed = params.speed
         self.battery = params.battery
+        self.min_dist = 100
+        self.max_dist = 0
+        self.avg_dist = [0, 0]
 
     def reset(self):
         self.battery = self.params.battery
         self.x, self.y = self.x_, self.y_
+        self.min_dist = 100
+        self.max_dist = 0
+        self.avg_dist = [0, 0]
 
     def move(self, x, y, movement):
         r = sqrt((x - self.x) ** 2.0 + (y - self.y) ** 2.0) + 1e-9
