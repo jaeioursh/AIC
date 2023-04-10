@@ -11,8 +11,8 @@ class CounterAgent:
         self.x_, self.y_ = self.x, self.y
         self.points = [[1, 1], [params.map_size - 1, 1],
                        [1, params.map_size - 1], [params.map_size - 1, params.map_size - 1]]
-        self.curr_goal = [1, 1]
-        self.pt_idx = 0
+        self.pt_idx = np.random.randint(0, 4)
+        self.curr_goal = self.points[self.pt_idx]
 
     def reset(self):
         self.x, self.y = self.x_, self.y_
@@ -27,8 +27,10 @@ class CounterAgent:
         # If I'm at the goal, change to a new goal
         if r < 1:
             new_idx = np.random.randint(0, 4)
-            while new_idx == self.pt_idx:
+            while_brk = 0
+            while new_idx == self.pt_idx and while_brk < 5:
                 new_idx = np.random.randint(0, 4)
+                while_brk += 1
             self.pt_idx = new_idx
             self.curr_goal = self.points[self.pt_idx]
             x, y = self.curr_goal
@@ -46,7 +48,7 @@ class DumbParam:
 
 if __name__ == '__main__':
     p = DumbParam()
-    ag = CounterAgent(3, 3, p)
+    ag = CounterAgent(p)
 
     for _ in range(10):
         ag.move()
