@@ -11,6 +11,7 @@ class CounterAgent:
         self.x_, self.y_ = self.x, self.y
         self.points = [[1, 1], [params.map_size - 1, 1],
                        [1, params.map_size - 1], [params.map_size - 1, params.map_size - 1]]
+        self.n_points = len(self.points)
         self.pt_idx = np.random.randint(0, 4)
         self.curr_goal = self.points[self.pt_idx]
 
@@ -26,12 +27,9 @@ class CounterAgent:
 
         # If I'm at the goal, change to a new goal
         if r < 1:
-            new_idx = np.random.randint(0, 4)
-            while_brk = 0
-            while new_idx == self.pt_idx and while_brk < 5:
-                new_idx = np.random.randint(0, 4)
-                while_brk += 1
-            self.pt_idx = new_idx
+            ch_arr = np.array(list(range(self.n_points)))
+            choices = [x for x in ch_arr if x!=self.pt_idx]
+            self.pt_idx = np.random.choice(choices)
             self.curr_goal = self.points[self.pt_idx]
             x, y = self.curr_goal
             r = sqrt((x - self.x) ** 2.0 + (y - self.y) ** 2.0) + 1e-9
