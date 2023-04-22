@@ -35,13 +35,15 @@ class aic:
             self.agents.append(agent_class(pos[0], pos[1], params))
 
         self.n_counter = params.counter
-        self.counter_agents = [CounterAgent(params) for _ in range(self.n_counter)]
+        self.counter_agents = [CounterAgent(params, c_num) for c_num in range(self.n_counter)]
 
     def reset(self):
         for p in self.pois:
             p.reset()
         for a in self.agents:
             a.reset()
+        for c in self.counter_agents:
+            c.reset()
 
     def G(self):
         g = np.zeros(self.n_poi_types)
@@ -140,8 +142,9 @@ class aic:
     def action(self, A):
         # Get the POIs and agents in sensor range for all agents
         bins = self.bins
-        for c_ag in self.counter_agents:
-            c_ag.move()
+        if self.params.counter_move:
+            for c_ag in self.counter_agents:
+                c_ag.move()
 
         for i in range(self.params.n_agents):
             if self.agents[i].battery > 0:
