@@ -103,11 +103,12 @@ class aic:
                 idx = int(0.99999 * (atan2(y - Y, x - X) + pi) / (pi * 2.0) * self.params.n_sensors)
                 idx += self.n_poi_types * self.params.n_sensors
                 bins[i][idx].append([ag, r])
+                # Divide by map size to normalize everything in [0,1] for the behavior space
                 if r < agent.min_dist:
-                    agent.min_dist = r
+                    agent.min_dist = r / self.params.map_size
                 if r > agent.max_dist:
-                    agent.max_dist = r
-                agent.avg_dist[0] += r
+                    agent.max_dist = r / self.params.map_size
+                agent.avg_dist[0] += r / self.params.map_size
                 agent.avg_dist[1] += 1
         return bins
 
