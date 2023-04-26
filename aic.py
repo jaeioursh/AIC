@@ -45,11 +45,8 @@ class aic:
             p.reset()
         for a in self.agents:
             a.reset()
-        c_nums = sample(list(range(10)), self.n_counter)
-        for i, c in enumerate(self.counter_agents):
-            c.c_num = c_nums[i]
+        for c in self.counter_agents:
             c.reset()
-
 
     def G(self):
         g = np.zeros(self.n_poi_types)

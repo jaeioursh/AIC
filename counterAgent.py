@@ -38,7 +38,6 @@ class CounterAgent:
 
     def reset(self):
         self.x, self.y = self.x_, self.y_
-        self.visit_order = self.visit_order_all[self.c_num]
         self.pt_num = 0
         self.curr_goal = self.points[self.visit_order[self.pt_num]]
 
