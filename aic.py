@@ -1,6 +1,7 @@
 from math import atan2, pi, sqrt
 import numpy as np
 from AIC.counterAgent import CounterAgent
+from random import sample
 
 
 def pois2type(pois):
@@ -35,15 +36,20 @@ class aic:
             self.agents.append(agent_class(pos[0], pos[1], params))
 
         self.n_counter = params.counter
-        self.counter_agents = [CounterAgent(params, c_num) for c_num in range(self.n_counter)]
+        # Randomly selects (without replacement) agent numbers for each counterfactual agent
+        # The only thing this currently impacts is what random walk route it takes through the space
+        self.counter_agents = [CounterAgent(params, c_num) for c_num in sample(list(range(10)), self.n_counter)]
 
     def reset(self):
         for p in self.pois:
             p.reset()
         for a in self.agents:
             a.reset()
-        for c in self.counter_agents:
+        c_nums = sample(list(range(10)), self.n_counter)
+        for i, c in enumerate(self.counter_agents):
+            c.c_num = c_nums[i]
             c.reset()
+
 
     def G(self):
         g = np.zeros(self.n_poi_types)
