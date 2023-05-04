@@ -26,9 +26,12 @@ class aic:
         self.n_poi_types = max(self.poi_types) + 1
 
         self.pois = []
+        poi_xy = []
         # Creates POIs and puts them in a list
         for pos, poi_class in zip(params.poi_pos, params.poi_class):
-            self.pois.append(poi_class(pos[0], pos[1], params))
+            new_poi = poi_class(pos[0], pos[1], params)
+            poi_xy.append([new_poi.x, new_poi.y])
+            self.pois.append(new_poi)
 
         self.agents = []
         # Creates agents and puts them in a list
@@ -38,7 +41,7 @@ class aic:
         self.n_counter = params.counter
         # Randomly selects (without replacement) agent numbers for each counterfactual agent
         # The only thing this currently impacts is what random walk route it takes through the space
-        self.counter_agents = [CounterAgent(params, c_num) for c_num in sample(list(range(10)), self.n_counter)]
+        self.counter_agents = [CounterAgent(params, c_num, poi_xy) for c_num in sample(list(range(10)), self.n_counter)]
 
     def reset(self):
         for p in self.pois:
@@ -51,11 +54,11 @@ class aic:
     def G(self):
         g = np.zeros(self.n_poi_types)
         for idx, poi in zip(self.poi_types, self.pois):
-            g[idx] += poi.complete
+            g[idx] += poi.g_complete
         return g
 
     def D(self):
-        d = np.zeros( (self.params.n_agents,self.n_poi_types))
+        d = np.zeros((self.params.n_agents, self.n_poi_types))
         for idx, poi in zip(self.poi_types, self.pois):
             for i in range(self.params.n_agents):
                 d[i][idx] += poi.dvec[i]
@@ -148,7 +151,10 @@ class aic:
         bins = self.bins
         if self.params.counter_move:
             for c_ag in self.counter_agents:
-                c_ag.move()
+                arrived = c_ag.move()
+                # If the agent is at a POI, observe the POI
+                if arrived:
+                    self.pois[arrived].cf_observe(c_ag.obs_amt)
 
         for i in range(self.params.n_agents):
             if self.agents[i].battery > 0:
@@ -175,6 +181,7 @@ class aic:
                     if r < self.params.interact_range:
                         agent.interact(effort, speed)
                         poi.observe(i, effort, speed)
+
 
     def action_size(self):
         # Can choose any POI type in any sensor region
