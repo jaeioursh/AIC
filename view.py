@@ -10,6 +10,7 @@ def view(env, ts,g, state=None, dly=0.1):
     if state is not None:
         plt.subplot(1, 2, 1)
     agents = np.array([[a.x, a.y] for a in env.agents])
+    cf = np.array([[cfa.x, cfa.y] for cfa in env.counter])
     plt.scatter(agents.T[0], agents.T[1], marker="o")
 
     pois = np.array([[p.x, p.y] for p in env.pois])

@@ -4,11 +4,13 @@ import numpy as np
 
 
 class CounterAgent:
-    def __init__(self, params, cnum, poi_xy):
+    def __init__(self, params, poi_xy, cf_xy):
         # Counterfactual agent moves randomly between four corners of the map
         self.params = params
-        self.c_num = cnum
-        self.x, self.y = (params.map_size/2) + np.random.uniform(0, 3), (params.map_size/2) + np.random.uniform(0, 3)
+        try:
+            self.x, self.y = cf_xy
+        except TypeError:
+            print("something went wrong here")
         self.x_, self.y_ = self.x, self.y
         self.obs_amt = 0.1
 
@@ -47,7 +49,7 @@ class CounterAgent:
             try:
                 self.curr_goal = self.points[self.visit_order[self.pt_num]]
             except IndexError:
-                print(self.c_num, self.pt_num)
+                print(self.pt_num)
                 print(self.visit_order)
                 exit()
             x, y = self.curr_goal

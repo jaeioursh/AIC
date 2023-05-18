@@ -26,11 +26,11 @@ class aic:
         self.n_poi_types = max(self.poi_types) + 1
 
         self.pois = []
-        poi_xy = []
+        poixy = []
         # Creates POIs and puts them in a list
         for pos, poi_class in zip(params.poi_pos, params.poi_class):
             new_poi = poi_class(pos[0], pos[1], params)
-            poi_xy.append([new_poi.x, new_poi.y])
+            poixy.append([new_poi.x, new_poi.y])
             self.pois.append(new_poi)
 
         self.agents = []
@@ -41,7 +41,11 @@ class aic:
         self.n_counter = params.counter
         # Randomly selects (without replacement) agent numbers for each counterfactual agent
         # The only thing this currently impacts is what random walk route it takes through the space
-        self.counter_agents = [CounterAgent(params, c_num, poi_xy) for c_num in sample(list(range(10)), self.n_counter)]
+        self.counter_agents = []
+        # Randomly choose the starting locations of each cf agent from the list
+        for cf_i in sample(list(range(len(params.counter_locs))), params.counter):
+            cfxy = params.counter_locs[cf_i]
+            self.counter_agents.append(CounterAgent(params, poixy, cfxy))
 
     def reset(self):
         for p in self.pois:

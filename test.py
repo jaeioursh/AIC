@@ -1,14 +1,14 @@
 from view import view
-from parameter import parameter
+from pymap_elites_multiobjective.parameters.parameters123 import Parameters as params
 from aic import aic
 
 import numpy as np
 
-params = parameter()
+# params = Parameters()
 env = aic(params)
-for i in range(100):
+for i in range(50):
     state = env.state()
-    g=sum(env.G())
+    g = sum(env.G())
     view(env, i, g, state, 0.3)
     # a = np.array([[0] * 8 + [0.5, 0.5, 0.5]] * 5)
     a = np.zeros((params.n_agents, env.action_size()))
