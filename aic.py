@@ -153,12 +153,6 @@ class aic:
     def action(self, A):
         # Get the POIs and agents in sensor range for all agents
         bins = self.bins
-        if self.params.counter_move:
-            for c_ag in self.counter_agents:
-                arrived = c_ag.move()
-                # If the agent is at a POI, observe the POI
-                if arrived:
-                    self.pois[arrived].cf_observe(c_ag.obs_amt)
 
         for i in range(self.params.n_agents):
             if self.agents[i].battery > 0:
@@ -185,6 +179,13 @@ class aic:
                     if r < self.params.interact_range:
                         agent.interact(effort, speed)
                         poi.observe(i, effort, speed)
+
+        if self.params.counter_move:
+            for c_ag in self.counter_agents:
+                arrived = c_ag.move()
+                # If the agent is at a POI, observe the POI
+                if arrived:
+                    self.pois[arrived].cf_observe(c_ag.obs_amt)
 
 
     def action_size(self):
