@@ -2,16 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-
-def view(env, ts,g, state=None, dly=0.1):
-    plt.ion()
+def view(env, ts, g, choice, state=None, dly=0.1):
+    # plt.ion()
 
     plt.clf()
-    if state is not None:
-        plt.subplot(1, 2, 1)
+    # if state is not None:
+    #     plt.subplot(1, 2, 1)
     agents = np.array([[a.x, a.y] for a in env.agents])
-    cf = np.array([[cfa.x, cfa.y] for cfa in env.counter])
+    cf = np.array([[cfa.x, cfa.y] for cfa in env.counter_agents])
     plt.scatter(agents.T[0], agents.T[1], marker="o")
+    plt.scatter(cf.T[0], cf.T[1], marker="o", color='red')
 
     pois = np.array([[p.x, p.y] for p in env.pois])
     colors = ["b", "k", "r", "c"]
@@ -21,9 +21,11 @@ def view(env, ts,g, state=None, dly=0.1):
     plt.xlim([-2, env.params.map_size + 2])
     plt.ylim([-2, env.params.map_size + 2])
 
-    plt.title(f'time: {ts} G: {g:.2f}')
-
-    if state is not None:
-        plt.subplot(1, 2, 2)
-        plt.imshow(state)
-    plt.pause(dly)
+    ag = env.agents[0]
+    plt.title(f'time: {ts} G: {g:.2f} \n min:{ag.min_dist:.02f} max:{ag.max_dist:.02f} avg: {ag.avg_dist[0] / ag.avg_dist[1]:.02f}')
+    #
+    # if state is not None:
+    #     plt.subplot(1, 2, 2)
+    #     plt.imshow(state)
+    # plt.pause(dly)
+    plt.savefig(f'/home/anna/PycharmProjects/pymap_elites_multiobjective/examples/rollouts/plt{ts}.png')

@@ -43,9 +43,9 @@ class aic:
         # The only thing this currently impacts is what random walk route it takes through the space
         self.counter_agents = []
         # Randomly choose the starting locations of each cf agent from the list
-        for cf_i in sample(list(range(len(params.counter_locs))), params.counter):
+        for cfnum, cf_i in enumerate(sample(list(range(len(params.counter_locs))), params.counter)):
             cfxy = params.counter_locs[cf_i]
-            self.counter_agents.append(CounterAgent(params, poixy, cfxy))
+            self.counter_agents.append(CounterAgent(params, poixy, cfxy, cfnum))
 
     def reset(self):
         for p in self.pois:
@@ -114,11 +114,12 @@ class aic:
                 idx += self.n_poi_types * self.params.n_sensors
                 bins[i][idx].append([ag, r])
                 # Divide by map size to normalize everything in [0,1] for the behavior space
-                if r < agent.min_dist:
-                    agent.min_dist = r / self.params.map_size
-                if r > agent.max_dist:
-                    agent.max_dist = r / self.params.map_size
-                agent.avg_dist[0] += r / self.params.map_size
+                norm_r = r / sqrt(2 * (self.params.map_size ** 2))
+                if norm_r < agent.min_dist:
+                    agent.min_dist = norm_r
+                if norm_r > agent.max_dist:
+                    agent.max_dist = norm_r
+                agent.avg_dist[0] += norm_r
                 agent.avg_dist[1] += 1
         return bins
 

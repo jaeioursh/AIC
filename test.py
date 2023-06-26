@@ -1,24 +1,22 @@
 from view import view
-from pymap_elites_multiobjective.parameters.parameters123 import Parameters as params
+from pymap_elites_multiobjective.parameters.parameters349 import Parameters as params
 from aic import aic
 
 import numpy as np
 
-# params = Parameters()
+# params.counter_move = False
 env = aic(params)
+
+
 for i in range(50):
     state = env.state()
+    max_quad = np.argmax(state[0, 8:16])
     g = sum(env.G())
-    view(env, i, g, state, 0.3)
-    # a = np.array([[0] * 8 + [0.5, 0.5, 0.5]] * 5)
-    a = np.zeros((params.n_agents, env.action_size()))
-    a[:, -3:] = 1.0
-    
-    idxs=[0,1,6,7,7]
-    if i>10:
-        a[-3:]=0
-        idxs=[2,3,4,5,5]
-        
-    a[range(len(idxs)), idxs] = 1
-    # print(a)
+    view(env, i, g, max_quad, state, 0.3)
+    idxs = [0]
+    if not i % 8:
+        a = np.zeros((params.n_agents, env.action_size()))
+        a[:, -3:] = 1.0
+        # rand_choice = np.random.randint(0, a.shape[1] - 3)
+        a[0, max_quad] = 1
     env.action(a)
