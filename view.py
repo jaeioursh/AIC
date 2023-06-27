@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def view(env, ts, g, choice, state=None, dly=0.1):
+def view(env, ts, g):
     # plt.ion()
 
     plt.clf()
@@ -23,9 +23,5 @@ def view(env, ts, g, choice, state=None, dly=0.1):
 
     ag = env.agents[0]
     plt.title(f'time: {ts} G: {g:.2f} \n min:{ag.min_dist:.02f} max:{ag.max_dist:.02f} avg: {ag.avg_dist[0] / ag.avg_dist[1]:.02f}')
-    #
-    # if state is not None:
-    #     plt.subplot(1, 2, 2)
-    #     plt.imshow(state)
-    # plt.pause(dly)
+
     plt.savefig(f'/home/anna/PycharmProjects/pymap_elites_multiobjective/examples/rollouts/plt{ts}.png')
