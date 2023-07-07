@@ -43,9 +43,10 @@ class aic:
         # The only thing this currently impacts is what random walk route it takes through the space
         self.counter_agents = []
         # Randomly choose the starting locations of each cf agent from the list
-        for cfnum, cf_i in enumerate(sample(list(range(len(params.counter_locs))), params.counter)):
+        # for cfnum, cf_i in enumerate(sample(list(range(len(params.counter_locs))), params.counter)):
+        for cf_i in range(params.counter):
             cfxy = params.counter_locs[cf_i]
-            self.counter_agents.append(CounterAgent(params, poixy, cfxy, cfnum))
+            self.counter_agents.append(CounterAgent(params, poixy, cfxy, cf_i))
 
     def reset(self):
         for p in self.pois:

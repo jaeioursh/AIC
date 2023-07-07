@@ -22,6 +22,6 @@ def view(env, ts, g):
     plt.ylim([-2, env.params.map_size + 2])
 
     ag = env.agents[0]
-    plt.title(f'time: {ts} G: {g:.2f} \n min:{ag.min_dist:.02f} max:{ag.max_dist:.02f} avg: {ag.avg_dist[0] / ag.avg_dist[1]:.02f}')
+    plt.title(f'time: {ts} G: [{g[0]:.2f}, {g[1]:.2f}]  \n min:{ag.min_dist:.02f} max:{ag.max_dist:.02f} avg: {ag.avg_dist[0] / ag.avg_dist[1]:.02f}')
 
     plt.savefig(f'/home/anna/PycharmProjects/pymap_elites_multiobjective/examples/rollouts/plt{ts}.png')

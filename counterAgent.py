@@ -35,17 +35,6 @@ class CounterAgent:
         self.pt_num = 0
         self.curr_goal = self.points[self.visit_order[self.pt_num]]
 
-    def setup_visit_points(self):
-        # Use this if the visit locations are independent of the POI locations
-        point_diffs = [2, 5, 8]
-        corners = np.array([[0, 0], [0, self.params.map_size], [self.params.map_size, 0],
-                            [self.params.map_size, self.params.map_size]])
-        points = []
-        for p in point_diffs:
-            diffs = np.array([[p, p], [p, -p], [-p, p], [-p, -p]])
-            points.extend(corners + diffs)
-        return np.array(points)
-
     def reset(self):
         self.x, self.y = self.x_, self.y_
         self.pt_num = 0
