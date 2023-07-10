@@ -1,6 +1,6 @@
-from view import view
-from parameter import parameter
-from aic import aic
+from AIC.view import view
+from AIC.parameter import parameter
+from AIC.aic import aic
 
 import numpy as np
 

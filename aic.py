@@ -46,7 +46,7 @@ class aic:
         return g
 
     def D(self):
-        d = np.zeros( (self.params.n_agents,self.n_poi_types))
+        d = np.zeros( (self.params.n_agents, self.n_poi_types))
         for idx, poi in zip(self.poi_types, self.pois):
             for i in range(self.params.n_agents):
                 d[i][idx] += poi.dvec[i]
