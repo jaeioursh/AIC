@@ -104,6 +104,9 @@ class aic:
                     idx += self.n_poi_types * self.params.n_sensors
                     bins[i][idx].append([ag, r])
 
+            min_d = 100
+            max_d = 0
+            avg_d = 0
             # Bin the counter-agents that are within sensor range -- goes in the same bins as the agents
             for k in range(self.n_counter):
                 ag = self.counter_agents[k]
@@ -116,12 +119,14 @@ class aic:
                 bins[i][idx].append([ag, r])
                 # Divide by map size to normalize everything in [0,1] for the behavior space
                 norm_r = r / sqrt(2 * (self.params.map_size ** 2))
-                if norm_r < agent.min_dist:
-                    agent.min_dist = norm_r
-                if norm_r > agent.max_dist:
-                    agent.max_dist = norm_r
-                agent.avg_dist[0] += norm_r
-                agent.avg_dist[1] += 1
+                if norm_r < min_d:
+                    min_d = norm_r
+                if norm_r > max_d:
+                    max_d = norm_r
+                avg_d += norm_r
+            agent.min_dist.append(min_d)
+            agent.max_dist.append(max_d)
+            agent.avg_dist.append(avg_d / float(self.n_counter))
         return bins
 
     def state(self):
