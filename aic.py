@@ -124,9 +124,10 @@ class aic:
                 if norm_r > max_d:
                     max_d = norm_r
                 avg_d += norm_r
-            agent.min_dist.append(min_d)
-            agent.max_dist.append(max_d)
-            agent.avg_dist.append(avg_d / float(self.n_counter))
+            if self.params.cf_bh:
+                agent.min_dist.append(min_d)
+                agent.max_dist.append(max_d)
+                agent.avg_dist.append(avg_d / float(self.n_counter))
         return bins
 
     def state(self):
