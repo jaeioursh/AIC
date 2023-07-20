@@ -139,13 +139,16 @@ class aic:
             bin = bins[i]
             # Final n sensors are for agents
             poi_bin = bin[:-self.params.n_sensors]
-            agent_bin = bin[-self.params.n_sensors:]
             # Sum of completeness state for POIs in each sensor bin
             state_poi_complete = [sum([poi.complete for poi, r in pois]) if len(pois) > 0 else 0 for pois in poi_bin]
             state_poi_dist = [sum([1 / (r + 1) for poi, r in pois]) if len(pois) > 0 else 0 for pois in poi_bin]
             # Distance density for agents in each sensor bin
-            state_agent_dist = [sum([1 / (r + 1) for agent, r in agents]) if len(agents) > 0 else 0 for agents in
-                                agent_bin]
+            if self.params.ag_in_st:
+                agent_bin = bin[-self.params.n_sensors:]
+                state_agent_dist = [sum([1 / (r + 1) for agent, r in agents]) if len(agents) > 0 else 0 for agents in
+                                    agent_bin]
+            else:
+                state_agent_dist = []
             # Battery percentage for agent
             state_battery = [self.agents[i].battery / self.params.battery]
             S.append(state_poi_complete + state_poi_dist + state_agent_dist + state_battery)
@@ -155,7 +158,10 @@ class aic:
         # POI portion of the state has one bin per poi type for each sensor
         # Double it for distance and completeness values
         poi_st = (self.n_poi_types * self.params.n_sensors * 2)
-        ag_st = self.params.n_sensors
+        if self.params.ag_in_st:
+            ag_st = self.params.n_sensors
+        else:
+            ag_st = 0
         return poi_st + ag_st + 1  # Add one for the battery value
 
     def action(self, A):
