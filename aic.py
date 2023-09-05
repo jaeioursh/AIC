@@ -181,18 +181,18 @@ class aic:
                 # If not, it is a null action
                 if len(bin[idx]) > 0:
                     # Determines behaviors
-                    movement = a[-3]
-                    effort = a[-2]
-                    speed = a[-1]
+                    velocity = a[-2]
+                    effort = a[-1]
+                    # speed = a[-1]
 
                     # Move toward chosen destination
                     poi, r = min(bin[idx], key=lambda x: x[1])
-                    agent.move(poi.x, poi.y, movement)
+                    agent.move(poi.x, poi.y, velocity)
 
                     # If within range, complete observations
                     if r < self.params.interact_range:
-                        agent.interact(effort, speed)
-                        poi.observe(i, effort, speed)
+                        agent.interact(effort)
+                        poi.observe(i, effort)
 
         if self.params.counter_move:
             for c_ag in self.counter_agents:
@@ -201,10 +201,9 @@ class aic:
                 if arrived:
                     self.pois[arrived].cf_observe(c_ag.obs_amt)
 
-
     def action_size(self):
         # Can choose any POI type in any sensor region
         poi_act = self.n_poi_types * self.params.n_sensors
-        # Behavior variables are movement, effort, speed
-        bh_vars = 3
+        # Behavior variables are velocity and effort
+        bh_vars = 2
         return poi_act + bh_vars

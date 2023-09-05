@@ -20,13 +20,13 @@ class agent:
         self.max_dist = []
         self.avg_dist = []
 
-    def move(self, x, y, movement):
+    def move(self, x, y, velocity):
         r = sqrt((x - self.x) ** 2.0 + (y - self.y) ** 2.0) + 1e-9
         dx = (x - self.x) / r
         dy = (y - self.y) / r
-        self.x += dx * self.top_speed * movement
-        self.y += dy * self.top_speed * movement
-        self.battery -= movement * movement
+        self.x += dx * self.top_speed * velocity
+        self.y += dy * self.top_speed * velocity
+        self.battery -= velocity * velocity
 
-    def interact(self, effort, speed):
-        self.battery -= effort * speed
+    def interact(self, effort):
+        self.battery -= effort * effort
