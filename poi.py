@@ -26,7 +26,9 @@ class poi:
         return min(self.work, 1)
 
     def observe(self, agent_idx, effort):
+        # This is not limited to 1
         self.work += effort
+        # This is limited to 1
         new_complete = self.fn()
         self.dvec[agent_idx] += new_complete - self.complete
         self.complete = new_complete

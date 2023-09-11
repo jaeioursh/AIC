@@ -9,14 +9,14 @@ class agent:
         self.x_, self.y_ = self.x, self.y  # to reset values
         self.top_speed = params.speed
         # self.battery = params.battery
-        self.battery = 4
+        self.battery = 18
         self.min_dist = []
         self.max_dist = []
         self.avg_dist = []
 
     def reset(self):
         # self.battery = self.params.battery
-        self.battery = 4
+        self.battery = 18
         self.x, self.y = self.x_, self.y_
         self.min_dist = []
         self.max_dist = []
