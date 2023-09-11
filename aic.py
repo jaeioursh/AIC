@@ -169,21 +169,23 @@ class aic:
         bins = self.bins
 
         for i in range(self.params.n_agents):
-            if self.agents[i].battery > 0:
+            a = A[i]
+            # Determines behaviors
+            velocity = a[-2]
+            effort = a[-1]
+            # speed = a[-1]
+
+            # If the action is feasible within the battery left
+            if self.agents[i].battery > (velocity + effort):
                 # For each agent
                 bin = bins[i]
                 agent = self.agents[i]
                 # Get the action
-                a = A[i]
                 # Determine which bin is being targeted
                 idx = np.argmax(a[:-3])
                 # If there is something in that bin, move toward it
                 # If not, it is a null action
                 if len(bin[idx]) > 0:
-                    # Determines behaviors
-                    velocity = a[-2]
-                    effort = a[-1]
-                    # speed = a[-1]
 
                     # Move toward chosen destination
                     poi, r = min(bin[idx], key=lambda x: x[1])
