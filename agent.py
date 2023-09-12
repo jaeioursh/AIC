@@ -28,7 +28,7 @@ class agent:
         dy = (y - self.y) / r
         self.x += dx * self.top_speed * velocity
         self.y += dy * self.top_speed * velocity
-        self.battery -= velocity
+        self.battery -= velocity ** 2
 
     def interact(self, effort):
-        self.battery -= effort
+        self.battery -= effort ** 2
