@@ -69,6 +69,9 @@ class aic:
                 d[i][idx] += poi.dvec[i]
         return d
 
+    def behaviors(self):
+        pass
+
     # bins pois and agents for the sensors and the actions
     def binning(self):
         # TODO: Add check for sensor range
@@ -176,13 +179,13 @@ class aic:
             # speed = a[-1]
 
             # If the action is feasible within the battery left
-            if self.agents[i].battery > (velocity + effort):
+            if self.agents[i].battery > (velocity**2 + effort**2):
                 # For each agent
                 bin = bins[i]
                 agent = self.agents[i]
                 # Get the action
                 # Determine which bin is being targeted
-                idx = np.argmax(a[:-3])
+                idx = np.argmax(a[:-2])
                 # If there is something in that bin, move toward it
                 # If not, it is a null action
                 if len(bin[idx]) > 0:
