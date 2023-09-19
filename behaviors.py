@@ -42,9 +42,18 @@ class Behaviors:
         self.distill_action[3, :] = np.nanmin(self.bins[:8, :], axis=0)
 
     def total_d(self):
-        # calculates total euclidean distance traveled from trajectory, normalized for the max possible distance (speed * time)
+        # calculates total Euclidean distance traveled from trajectory, normalized for the max possible distance (speed * time)
         xy_ds = (self.trajectory[:, 0:-1] - self.trajectory[:, 1:]) ** 2
-        return np.sum(np.sqrt(xy_ds[0, :] + xy_ds[1, :]) / self.p.speed) / self.p.time_steps
+        return np.sum(np.sqrt(xy_ds[0, :] + xy_ds[1, :])) / self.theoretical_max_dist()
+
+    def theoretical_max_dist(self):
+        x = np.linspace(1e-8, 1, 100)
+        # Battery divided by velocity squared
+        n = np.floor(self.p.battery / x ** 2)
+        # limited to number of time steps
+        n[n > self.p.time_steps] = self.p.time_steps
+        # Calculate the max distance
+        return max(self.p.speed * x * n)
 
     def summary_stats(self):
         self.distilled_act()
