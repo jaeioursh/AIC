@@ -69,8 +69,14 @@ class aic:
                 d[i][idx] += poi.dvec[i]
         return d
 
-    def behaviors(self):
-        pass
+    def step(self, acts):
+        if len(self.agents) == 1:
+            self.action([acts])
+        else:
+            self.action(acts)
+        # Aligns with gym environments
+        # Returns state, vector reward, terminated, truncated, info
+        return self.state(), self.G(), False, False, {}
 
     # bins pois and agents for the sensors and the actions
     def binning(self):
